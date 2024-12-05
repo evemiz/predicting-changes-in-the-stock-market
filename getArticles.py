@@ -4,28 +4,27 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-# ה-API Key שלך (שמור אותו בסוד)
-api_key = '0fd9989c-e4b3-4f25-a9c6-30f0729a21a2'
+api_key = ''
 
-# רשימת המילים לחיפוש
 keywords = [
-    "Economic crisis", "Stock market", "Inflation", "Recession", "US economy", 
+    "Economic crisis", "Stock market", "Inflation", "Recession", "US economy",
     "Elections", "Climate change", "Nuclear threat", "Unemployment", "Peace",
-    "Economic recovery", "Innovation", "Market expansion", "Technological progress",
-    "Investment opportunities", "Trade agreements", "Taxes", "Venture capital", 
-    "Entrepreneurship", "Employment growth", "Interest rate", "Artificial intelligence",
-    "Foreign policy", "Financial security", "Large-scale fundraising", "Entrepreneurial growth",
+    "Economic recovery", "Innovation", "Market expansion",
+    "Technological progress", "Investment opportunities", "Trade agreements",
+    "Taxes", "Venture capital", "Entrepreneurship", "Employment growth",
+    "Interest rate", "Artificial intelligence", "Foreign policy",
+    "Financial security", "Large-scale fundraising", "Entrepreneurial growth",
     "Startup funding success", "War", "Ceasefire", "Terrorism", "Pandemic"
 ]
 
-# פונקציה לחיפוש כתבות
+
 def fetch_articles(keyword, from_date=None, to_date=None):
     url = f'https://content.guardianapis.com/search?q={keyword}&api-key={api_key}&show-fields=bodyText,headline&order-by=relevance&page-size=5'
     if from_date:
         url += f'&from-date={from_date}'
     if to_date:
         url += f'&to-date={to_date}'
-    url += '&gl=us' 
+    url += '&gl=us'
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
@@ -34,7 +33,7 @@ def fetch_articles(keyword, from_date=None, to_date=None):
         print(f"Failed to fetch articles for {keyword}. Status code: {response.status_code}")
         return []
 
-# פונקציה ליצירת טווחי התאריכים לכל חודש
+
 def generate_date_ranges(start_date, end_date):
     date_ranges = []
     current_date = start_date
@@ -48,21 +47,18 @@ def generate_date_ranges(start_date, end_date):
 
     return date_ranges
 
-# הגדרת טווח התאריכים בין ינואר 2022 לנובמבר 2024
-start_date = datetime(2022, 1, 1)
+
+start_date = datetime(2024, 1, 1)
 end_date = datetime(2024, 11, 30)
 
-# יצירת טווחי התאריכים
 date_ranges = generate_date_ranges(start_date, end_date)
 
-# חיפוש כתבות עבור כל חודש
 for from_date, to_date in date_ranges:
     month_year = datetime.strptime(from_date, '%Y-%m-%d').strftime('%Y-%m')
     all_articles = {}
 
     print(f"Fetching articles for: {month_year}")
-    
-    # חיפוש עבור כל מילה ברשימה
+
     for keyword in keywords:
         print(f"  Fetching articles for: {keyword}")
         articles = fetch_articles(keyword, from_date, to_date)
@@ -76,7 +72,6 @@ for from_date, to_date in date_ranges:
                 }
                 all_articles[keyword].append(article_info)
 
-    # שמירת התוצאות לקובץ JSON לפי שם חודש ושנה
     file_name = f'articles-{month_year}.json'
     with open(file_name, 'w') as f:
         json.dump(all_articles, f, indent=4)
