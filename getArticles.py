@@ -9,14 +9,13 @@ api_key = '0fd9989c-e4b3-4f25-a9c6-30f0729a21a2'
 
 # רשימת המילים לחיפוש
 keywords = [
-    "US Election", "Presidential Election", "Election Results", "US Polls", 
-    "Military Conflict", "Defense Budget", "US Military", "Nuclear Threat",
-    "US Healthcare", "COVID-19", "Pandemic", "Vaccine", "Mental Health", 
-    "Economic Crisis", "Stock Market", "Inflation", "Recession", 
-    "Social Justice", "Police Reform", 
-    "Climate Change", "Carbon Emissions",
-    "Cybersecurity",
-    "US Economy", "US Politics", "US President"
+    "Economic crisis", "Stock market", "Inflation", "Recession", "US economy", 
+    "Elections", "Climate change", "Nuclear threat", "Unemployment", "Peace",
+    "Economic recovery", "Innovation", "Market expansion", "Technological progress",
+    "Investment opportunities", "Trade agreements", "Taxes", "Venture capital", 
+    "Entrepreneurship", "Employment growth", "Interest rate", "Artificial intelligence",
+    "Foreign policy", "Financial security", "Large-scale fundraising", "Entrepreneurial growth",
+    "Startup funding success", "War", "Ceasefire", "Terrorism", "Pandemic"
 ]
 
 # פונקציה לחיפוש כתבות
@@ -26,7 +25,7 @@ def fetch_articles(keyword, from_date=None, to_date=None):
         url += f'&from-date={from_date}'
     if to_date:
         url += f'&to-date={to_date}'
-    url += '&gl=us'  # מגביל את התוצאות לארה"ב
+    url += '&gl=us' 
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
